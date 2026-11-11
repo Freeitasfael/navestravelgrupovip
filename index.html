@@ -45,7 +45,58 @@ html{overflow-x:clip}h1,h2{font-family:Inter,system-ui,sans-serif;font-weight:80
 .site-footer a:hover,.site-footer a:focus-visible{background:none;color:#f7c853}
 .brand-icon{display:block;width:19px;height:19px;flex:none;fill:currentColor}
 .footer-arrow{color:#a5b5c0;font-size:16px}
-.footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px}.site-footer .photo-credit a{display:inline;min-height:0;padding:0;border:0;text-decoration:underline;color:inherit}.photo-credit summary{cursor:pointer;text-align:right}.photo-credit div{margin-top:6px}.photo>a{display:block;height:100%}</style>
+.footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px}.site-footer .photo-credit a{display:inline;min-height:0;padding:0;border:0;text-decoration:underline;color:inherit}.photo-credit summary{cursor:pointer;text-align:right}.photo-credit div{margin-top:6px}.photo>a{display:block;height:100%}
+html,body{overflow-x:clip}
+.cta{max-width:100%;text-align:center}
+.cta.top{white-space:nowrap;flex-shrink:0}
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;gap:36px;padding:44px 0 78px}
+  .intro{max-width:56ch}
+  .photo{height:auto;aspect-ratio:16/10;max-height:440px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:24px}
+  .footer-brand{grid-column:1/-1}
+}
+@media(max-width:740px){
+  .wrap{width:min(1160px,calc(100% - 32px))}
+  header .wrap{min-height:68px;padding:10px 0}
+  .logo{width:86px;height:auto}
+  .cta.top{min-height:42px;padding:9px 14px;font-size:13.5px}
+  .hero-grid{gap:26px;padding:28px 0 64px}
+  .tag{font-size:11px;letter-spacing:.14em;gap:8px}
+  .tag:before{width:18px}
+  h1{font-size:clamp(32px,8.5vw,44px);line-height:1.04;letter-spacing:-.038em;margin:14px 0 16px}
+  .intro{font-size:16px;line-height:1.55;margin-bottom:22px}
+  .hero .cta,.closing .cta{width:100%;max-width:400px;min-height:52px;padding:15px 18px;font-size:15.5px}
+  .photo{aspect-ratio:4/3.4;max-height:none;border-radius:16px 16px 56px 16px}
+  .transition-band .ribbon{padding:8px 0;transform:translateY(-50%) rotate(-3deg)}
+  .track{font-size:clamp(16px,4.5vw,22px)}
+  .benefits{padding:68px 0 38px}
+  .benefits h2,.proof h2,.closing h2{font-size:clamp(27px,7.2vw,38px);line-height:1.08;letter-spacing:-.035em}
+  .benefits-grid{grid-template-columns:1fr;gap:14px;margin:22px 0 8px}
+  .benefit{padding:20px 18px}
+  .benefit h3{font-size:19px}
+  .benefit p{font-size:15px}
+  .proof{padding:38px 0 48px}
+  .carousel{margin-top:22px;border-radius:14px;-webkit-overflow-scrolling:touch}
+  .feedback-group{gap:12px;padding-right:12px}
+  .feedback-group img{height:clamp(220px,65vw,300px);border-radius:14px}
+  .closing{padding:48px 0 54px}
+  .closing p{font-size:15.5px;margin:14px auto 22px}
+  .site-footer{padding:28px 0 22px}
+  .footer-grid{grid-template-columns:1fr;padding:20px 18px;gap:18px;border-radius:16px}
+  .footer-brand{grid-column:auto}
+  .footer-brand img{width:120px}
+  .site-footer a{min-height:46px;font-size:14.5px}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:6px}
+  dialog{padding:22px 18px}
+  dialog h2{font-size:24px}
+  dialog .cta{width:100%}
+}
+@media(max-width:380px){
+  .wrap{width:calc(100% - 24px)}
+  h1{font-size:30px}
+  .cta{padding:14px;font-size:15px}
+}</style>
 <header><div class="wrap"><img class="logo" src="./assets/1eb74837e645.png" alt="Naves Travel"><button class="cta top" data-vip>Grupo VIP ↗</button></div></header>
 <main><section class="hero"><div class="wrap hero-grid"><div><div class="tag">Grupo VIP</div><h1>Black Friday da Naves Travel no <em>Grupo VIP de Ofertas</em></h1><p class="intro">No Grupo VIP da Naves Travel, você encontra promoções que não vão para o Instagram e acompanha as ofertas da Black Friday em tempo integral pelo WhatsApp.</p><button class="cta" data-vip><svg class="wa" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 11.8a8.5 8.5 0 0 1-12.6 7.5l-4.4 1.2 1.2-4.3a8.5 8.5 0 1 1 15.8-4.4Z" stroke="currentColor" stroke-width="1.7"/><path d="M9 7.5c-1.9.2-2 3.3.5 5.7 2.2 2.2 5.2 3.3 6 1.4l.3-1-2.5-1.2-.9 1c-1.2-.4-2.5-1.6-2.9-2.8l.7-.8L9 7.5Z" fill="currentColor"/></svg> Quero entrar no Grupo VIP</button></div><figure class="photo"><a href="https://commons.wikimedia.org/wiki/File:Porto_de_Galinhas_piscinas_naturais.jpg" aria-label="Piscinas naturais de Porto de Galinhas. Foto de Jobosco, licença CC BY-SA 4.0, recorte na exibição." title="Foto de Jobosco · CC BY-SA 4.0 · recorte na exibição"><img src="./assets/646570918954.jpeg" alt="Piscinas naturais de Porto de Galinhas, Pernambuco"></a></figure></div></section><div class="transition-band"><div class="ribbon" aria-hidden="true"><div class="track"><span> BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp;</span><span> BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp;</span></div></div></div>
 <section class="benefits"><div class="wrap">
