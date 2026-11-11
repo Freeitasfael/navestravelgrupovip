@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 const TIMEZONE = 'America/Sao_Paulo';
 
 function getRedisConfig() {
@@ -35,6 +37,37 @@ async function redisPipeline(commands) {
     }
     return entry ? entry.result : null;
   });
+}
+
+function checkAdminAuth(req) {
+  const expected = process.env.ADMIN_PASSWORD;
+  if (!expected) return { authorized: true, authEnabled: false };
+  const provided = String(req.headers['x-admin-password'] || '');
+  const expectedBuf = Buffer.from(expected, 'utf8');
+  const providedBuf = Buffer.from(provided, 'utf8');
+  const match =
+    expectedBuf.length === providedBuf.length &&
+    crypto.timingSafeEqual(expectedBuf, providedBuf);
+  return { authorized: match, authEnabled: true };
+}
+
+async function parseJsonBody(req) {
+  if (req.body && typeof req.body === 'object') return req.body;
+  if (typeof req.body === 'string') {
+    try {
+      return JSON.parse(req.body);
+    } catch {
+      return {};
+    }
+  }
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  if (!chunks.length) return {};
+  try {
+    return JSON.parse(Buffer.concat(chunks).toString('utf8'));
+  } catch {
+    return {};
+  }
 }
 
 function getSaoPauloParts(date = new Date()) {
@@ -80,11 +113,23 @@ function pairsToObject(raw) {
   return out;
 }
 
+function pairsToStringObject(raw) {
+  if (!raw) return {};
+  if (!Array.isArray(raw)) return raw;
+  const out = {};
+  for (let i = 0; i < raw.length; i += 2) {
+    out[String(raw[i])] = String(raw[i + 1] ?? '');
+  }
+  return out;
+}
+
 module.exports = {
   getRedisConfig,
   redisPipeline,
+  checkAdminAuth,
+  parseJsonBody,
   getSaoPauloParts,
   getRecentDays,
   pairsToObject,
+  pairsToStringObject,
 };
-

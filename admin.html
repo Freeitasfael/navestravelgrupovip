@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Admin · Fluxo & Cliques | Naves Travel</title>
+<title>Admin · Fluxo & Leads | Naves Travel</title>
 <style>
 :root{
   --navy:#0b2638;
@@ -19,7 +19,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--paper);color:var(--navy);font-family:Inter,system-ui,-apple-system,sans-serif;overflow-x:clip}
-.wrap{width:min(1180px,calc(100% - 32px));margin:0 auto}
+.wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
 header{background:var(--deep);color:#fff;border-bottom:1px solid #ffffff1a}
 header .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
 .brand{display:flex;align-items:center;gap:12px}
@@ -46,9 +46,10 @@ main{padding:24px 0 48px}
 .kpi-sub{margin-top:8px;font-size:13px;color:var(--muted)}
 .kpi-sub b{color:var(--navy)}
 .grid-2{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-bottom:16px}
+.grid-2-eq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
 .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:16px}
 .card h2{margin:0 0 4px;font-size:16px;font-weight:750;letter-spacing:-.02em}
-.card .sub{margin:0 0 16px;font-size:12.5px;color:var(--muted)}
+.card .sub{margin:0 0 14px;font-size:12.5px;color:var(--muted);line-height:1.45}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-bottom:10px;flex-wrap:wrap}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .swatch{width:10px;height:10px;border-radius:3px;display:inline-block}
@@ -76,33 +77,45 @@ main{padding:24px 0 48px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th,td{text-align:left;padding:9px 8px;border-bottom:1px solid #efeae0;white-space:nowrap}
 th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;font-size:11.5px;font-weight:650}
 .badge.view{background:#eef3f7;color:var(--navy)}
 .badge.vip{background:#e1faed;color:var(--green-dark)}
 .badge.link{background:#fdf3d7;color:#744d00}
-.empty{font-size:13px;color:var(--muted);padding:14px 0}
+.empty{font-size:13px;color:var(--muted);padding:10px 0}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{border:1px solid var(--border);background:#f8f5ed;color:var(--navy);border-radius:999px;padding:6px 11px;font:600 12px/1 Inter,system-ui,sans-serif;cursor:pointer}
+.chip:hover{background:#efe9db;border-color:#cbbca0}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.form-grid .field{margin-bottom:0}
+.field label{font-size:12px;font-weight:650;color:var(--navy)}
+.field input{border:1px solid #c9c3b5;border-radius:8px;padding:9px 11px;font:inherit;font-size:13.5px;width:100%;background:#fff}
+.field input:focus{outline:2px solid var(--navy);border-color:var(--navy)}
+.url-box{display:flex;gap:8px;align-items:center;background:#f8f5ed;border:1px solid var(--border);border-radius:9px;padding:8px 10px}
+.url-box code{flex:1;font:500 12px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;word-break:break-all;color:var(--navy)}
+.feedback{font-size:12.5px;margin:8px 0 0;font-weight:600}
+.feedback.ok{color:var(--green-dark)}
+.feedback.err{color:#b42318}
 .login-box,.error-box{max-width:420px;margin:48px auto;background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 8px 30px #09172210}
 .login-box h1,.error-box h1{margin:0 0 8px;font-size:22px;letter-spacing:-.03em}
 .login-box p,.error-box p{margin:0 0 16px;font-size:14px;color:var(--muted);line-height:1.5}
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.field label{font-size:13px;font-weight:600}
-.field input{border:1px solid #c9c3b5;border-radius:9px;padding:11px 12px;font:inherit;font-size:15px}
-.field input:focus{outline:2px solid var(--navy);border-color:var(--navy)}
 .err-msg{color:#b42318;font-size:13px;margin:0 0 12px}
 .hidden{display:none!important}
 @media(max-width:960px){
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .grid-2,.grid-3{grid-template-columns:1fr}
+  .grid-2,.grid-2-eq,.grid-3{grid-template-columns:1fr}
 }
 @media(max-width:600px){
   .wrap{width:calc(100% - 24px)}
   .kpis{grid-template-columns:1fr 1fr;gap:10px}
   .card{padding:14px}
   .kpi-value{font-size:24px}
+  .form-grid{grid-template-columns:1fr}
+  .url-box{flex-direction:column;align-items:stretch}
   .bars{gap:4px;height:145px}
   .day-lbl{font-size:9px}
   .hours{gap:2px}
-  .hour-lbl:nth-child(even){display:none}
   .hour-col:nth-child(even) .hour-lbl{visibility:hidden}
 }
 </style>
@@ -114,7 +127,7 @@ th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mu
       <img src="./assets/1eb74837e645.png" alt="Naves Travel">
       <div class="brand-title">
         <strong>Painel Admin · Black Friday</strong>
-        <span>Fluxo de acessos e cliques no Grupo VIP</span>
+        <span>Fluxo de acessos, origem dos leads e conversões</span>
       </div>
     </div>
     <div class="actions">
@@ -180,6 +193,57 @@ th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mu
       </article>
     </div>
 
+    <div class="grid-2-eq">
+      <article class="card">
+        <h2>De onde vêm os leads (Canal + Conversão)</h2>
+        <p class="sub">Acessos, cliques no Grupo VIP e taxa de conversão por origem/mídia</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Origem / Mídia</th>
+                <th class="num">Acessos</th>
+                <th class="num">Cliques VIP</th>
+                <th class="num">Conv.</th>
+              </tr>
+            </thead>
+            <tbody id="channelsBody"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Campanhas & Cidades</h2>
+        <p class="sub">Desempenho por <code>utm_campaign</code> e localização (IP Vercel)</p>
+        <div class="table-wrap" style="margin-bottom:14px">
+          <table>
+            <thead>
+              <tr>
+                <th>Campanha</th>
+                <th class="num">Acessos</th>
+                <th class="num">Cliques VIP</th>
+                <th class="num">Conv.</th>
+              </tr>
+            </thead>
+            <tbody id="campaignsBody"></tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Cidade / Estado</th>
+                <th class="num">Acessos</th>
+                <th class="num">Cliques VIP</th>
+                <th class="num">Conv.</th>
+              </tr>
+            </thead>
+            <tbody id="geoBody"></tbody>
+          </table>
+        </div>
+      </article>
+    </div>
+
     <div class="grid-2">
       <article class="card">
         <h2>Fluxo dos últimos 14 dias</h2>
@@ -198,10 +262,10 @@ th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mu
       </article>
     </div>
 
-    <div class="grid-3">
+    <div class="grid-2-eq">
       <article class="card">
         <h2>Botões que mais convertem</h2>
-        <p class="sub">Cliques por posição do botão VIP e links</p>
+        <p class="sub">Cliques por posição do botão VIP e links do rodapé</p>
         <div class="list" id="locationsList"></div>
       </article>
 
@@ -210,25 +274,79 @@ th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mu
         <p class="sub">Proporção entre acessos mobile e desktop</p>
         <div class="list" id="devicesList"></div>
       </article>
+    </div>
+
+    <div class="grid-2-eq">
+      <article class="card">
+        <h2>Gerador de Links Rastreados</h2>
+        <p class="sub">Use links com UTM para saber exatamente qual post, story ou anúncio trouxe o lead</p>
+        <div class="presets">
+          <button class="chip" type="button" data-preset="instagram|bio|blackfriday">Bio Instagram</button>
+          <button class="chip" type="button" data-preset="instagram|stories|blackfriday">Stories Instagram</button>
+          <button class="chip" type="button" data-preset="meta_ads|cpc|blackfriday_vip">Meta Ads</button>
+          <button class="chip" type="button" data-preset="google_ads|cpc|blackfriday_vip">Google Ads</button>
+          <button class="chip" type="button" data-preset="whatsapp|lista|blackfriday">WhatsApp</button>
+          <button class="chip" type="button" data-preset="tiktok|bio|blackfriday">TikTok</button>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="utmSource">Origem (utm_source)</label>
+            <input id="utmSource" value="instagram" placeholder="instagram, meta_ads, google_ads">
+          </div>
+          <div class="field">
+            <label for="utmMedium">Mídia (utm_medium)</label>
+            <input id="utmMedium" value="bio" placeholder="bio, stories, cpc">
+          </div>
+          <div class="field">
+            <label for="utmCampaign">Campanha (utm_campaign)</label>
+            <input id="utmCampaign" value="blackfriday" placeholder="blackfriday_vip">
+          </div>
+          <div class="field">
+            <label for="utmContent">Anúncio / Criativo (utm_content)</label>
+            <input id="utmContent" placeholder="opcional (ex: video1)">
+          </div>
+        </div>
+        <div class="url-box">
+          <code id="generatedUrl"></code>
+          <button class="btn primary" id="copyUrlBtn" type="button">Copiar link</button>
+        </div>
+        <p class="feedback ok hidden" id="copyMsg">Link copiado!</p>
+      </article>
 
       <article class="card">
-        <h2>Origens de tráfego</h2>
-        <p class="sub">UTM source ou site de origem</p>
-        <div class="list" id="sourcesList"></div>
+        <h2>Meta Pixel, GA4 & Google Ads</h2>
+        <p class="sub">Dispara <code>PageView</code> ao abrir e evento de conversão (<code>Lead</code> / <code>generate_lead</code>) no clique do Grupo VIP</p>
+        <form id="pixelForm">
+          <div class="field">
+            <label for="metaPixelInput">Meta Pixel ID (Facebook / Instagram Ads)</label>
+            <input id="metaPixelInput" placeholder="Ex: 123456789012345" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="ga4Input">Google Analytics 4 (Measurement ID)</label>
+            <input id="ga4Input" placeholder="Ex: G-XXXXXXXXXX">
+          </div>
+          <div class="field">
+            <label for="gadsInput">Google Ads Conversão (send_to)</label>
+            <input id="gadsInput" placeholder="Ex: AW-123456789/AbCdEfGhIj">
+          </div>
+          <button class="btn primary" type="submit">Salvar integrações</button>
+          <p class="feedback hidden" id="pixelMsg"></p>
+        </form>
       </article>
     </div>
 
     <article class="card">
       <h2>Atividade recente</h2>
-      <p class="sub">Últimos 30 acessos e cliques registrados</p>
+      <p class="sub">Últimos 30 acessos e cliques registrados (com origem e cidade)</p>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>Horário (BRT)</th>
               <th>Evento</th>
-              <th>Detalhe / Botão</th>
-              <th>Origem</th>
+              <th>Origem / Campanha</th>
+              <th>Cidade / UF</th>
+              <th>Botão</th>
               <th>Dispositivo</th>
             </tr>
           </thead>
@@ -287,8 +405,26 @@ function renderBarsList(container, entries, labelMap = {}, colorClass = '') {
   }).join('');
 }
 
+function renderFunnelTable(tbody, rows, emptyText, labelFn) {
+  if (!rows || !rows.length) {
+    tbody.innerHTML = `<tr><td colspan="4" class="empty">${esc(emptyText)}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.slice(0, 12).map((row) => `
+    <tr>
+      <td><strong>${esc(labelFn(row))}</strong></td>
+      <td class="num">${fmt(row.views)}</td>
+      <td class="num">${fmt(row.clicks)}</td>
+      <td class="num">${pct(row.clicks, row.views)}</td>
+    </tr>`).join('');
+}
+
 function renderDashboard(data) {
-  const { totals, today, daily, hours, locations, otherLinks, devices, sources, recent, authEnabled, generatedAt } = data;
+  const {
+    totals, today, daily, hours, locations, otherLinks,
+    devices, channels, campaigns, geo, recent, authEnabled, generatedAt,
+  } = data;
+
   $('#kpiViews').textContent = fmt(totals.views);
   $('#kpiViewsToday').textContent = fmt(today.views);
   $('#kpiUniques').textContent = fmt(totals.uniques);
@@ -310,6 +446,25 @@ function renderDashboard(data) {
     badge.innerHTML = '<span class="dot"></span> Acesso aberto (sem senha)';
     $('#logoutBtn').classList.add('hidden');
   }
+
+  renderFunnelTable(
+    $('#channelsBody'),
+    channels,
+    'Nenhum canal registrado ainda.',
+    (r) => (r.detail && r.detail !== 'none' ? `${r.source} · ${r.detail}` : r.source)
+  );
+  renderFunnelTable(
+    $('#campaignsBody'),
+    campaigns,
+    'Nenhuma campanha (utm_campaign) registrada ainda.',
+    (r) => (r.detail ? `${r.detail} (${r.source})` : r.source)
+  );
+  renderFunnelTable(
+    $('#geoBody'),
+    geo,
+    'Aguardando acessos com geolocalização.',
+    (r) => r.place
+  );
 
   const maxDay = Math.max(1, ...daily.map((d) => Math.max(d.views, d.vipClicks)));
   $('#dailyChart').innerHTML = daily.map((d) => {
@@ -346,27 +501,54 @@ function renderDashboard(data) {
   const devEntries = Object.entries(devices).sort((a, b) => b[1] - a[1]);
   renderBarsList($('#devicesList'), devEntries, DEVICE_LABELS, '');
 
-  const srcEntries = Object.entries(sources).sort((a, b) => b[1] - a[1]).slice(0, 8);
-  renderBarsList($('#sourcesList'), srcEntries, {}, 'gold');
-
   const tbody = $('#recentBody');
   if (!recent.length) {
-    tbody.innerHTML = '<tr><td colspan="5" class="empty">Nenhum evento registrado ainda.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">Nenhum evento registrado ainda.</td></tr>';
   } else {
     tbody.innerHTML = recent.map((ev) => {
       const badgeClass = ev.type === 'vip_click' ? 'vip' : ev.type === 'link_click' ? 'link' : 'view';
       const evLabel = ev.type === 'vip_click' ? 'Clique VIP' : ev.type === 'link_click' ? 'Clique link' : 'Acesso';
       const detail = ev.loc ? (LOC_LABELS[ev.loc] || ev.loc) : 'Página inicial';
+      const originParts = [ev.source || 'direto'];
+      if (ev.medium && ev.medium !== 'none') originParts.push(ev.medium);
+      if (ev.campaign) originParts.push(ev.campaign);
       return `
         <tr>
           <td>${esc(ev.ts)}</td>
           <td><span class="badge ${badgeClass}">${evLabel}</span></td>
+          <td>${esc(originParts.join(' · '))}</td>
+          <td>${esc(ev.geo || '—')}</td>
           <td>${esc(detail)}</td>
-          <td>${esc(ev.source || 'direto')}</td>
           <td>${esc(ev.device === 'mobile' ? 'Mobile' : 'Desktop')}</td>
         </tr>`;
     }).join('');
   }
+}
+
+function updateGeneratedUrl() {
+  const base = location.origin + '/';
+  const params = new URLSearchParams();
+  const s = $('#utmSource').value.trim();
+  const m = $('#utmMedium').value.trim();
+  const c = $('#utmCampaign').value.trim();
+  const ct = $('#utmContent').value.trim();
+  if (s) params.set('utm_source', s);
+  if (m) params.set('utm_medium', m);
+  if (c) params.set('utm_campaign', c);
+  if (ct) params.set('utm_content', ct);
+  const qs = params.toString();
+  $('#generatedUrl').textContent = qs ? `${base}?${qs}` : base;
+}
+
+async function loadPixelsConfig() {
+  try {
+    const res = await fetch('/api/pixels', { cache: 'no-store' });
+    if (!res.ok) return;
+    const cfg = await res.json();
+    $('#metaPixelInput').value = cfg.metaPixelId || '';
+    $('#ga4Input').value = cfg.ga4Id || '';
+    $('#gadsInput').value = cfg.gadsSendTo || '';
+  } catch {}
 }
 
 async function loadStats() {
@@ -394,7 +576,7 @@ async function loadStats() {
     $('#loginError').classList.add('hidden');
     showView('dashboard');
     renderDashboard(data);
-  } catch (err) {
+  } catch {
     $('#errorText').textContent = 'Erro de rede ao consultar /api/stats.';
     showView('error');
   }
@@ -402,9 +584,9 @@ async function loadStats() {
 
 $('#loginForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  const pwd = $('#passwordInput').value;
-  sessionStorage.setItem(STORAGE_KEY, pwd);
+  sessionStorage.setItem(STORAGE_KEY, $('#passwordInput').value);
   loadStats();
+  loadPixelsConfig();
 });
 
 $('#logoutBtn').addEventListener('click', () => {
@@ -416,14 +598,70 @@ $('#logoutBtn').addEventListener('click', () => {
 $('#refreshBtn').addEventListener('click', loadStats);
 $('#retryBtn').addEventListener('click', loadStats);
 
+document.querySelectorAll('[data-preset]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const [s, m, c] = btn.dataset.preset.split('|');
+    $('#utmSource').value = s || '';
+    $('#utmMedium').value = m || '';
+    $('#utmCampaign').value = c || '';
+    updateGeneratedUrl();
+  });
+});
+
+['utmSource', 'utmMedium', 'utmCampaign', 'utmContent'].forEach((id) => {
+  $('#' + id).addEventListener('input', updateGeneratedUrl);
+});
+
+$('#copyUrlBtn').addEventListener('click', async () => {
+  const url = $('#generatedUrl').textContent;
+  try {
+    await navigator.clipboard.writeText(url);
+    $('#copyMsg').classList.remove('hidden');
+    setTimeout(() => $('#copyMsg').classList.add('hidden'), 2200);
+  } catch {}
+});
+
+$('#pixelForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = $('#pixelMsg');
+  const password = sessionStorage.getItem(STORAGE_KEY) || '';
+  msg.className = 'feedback hidden';
+  try {
+    const res = await fetch('/api/pixels', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(password ? { 'x-admin-password': password } : {}),
+      },
+      body: JSON.stringify({
+        metaPixelId: $('#metaPixelInput').value.trim(),
+        ga4Id: $('#ga4Input').value.trim(),
+        gadsSendTo: $('#gadsInput').value.trim(),
+      }),
+    });
+    const out = await res.json();
+    if (!res.ok) {
+      msg.textContent = out.error || 'Não foi possível salvar.';
+      msg.className = 'feedback err';
+      return;
+    }
+    msg.textContent = 'Integrações salvas! O site já está usando essas tags.';
+    msg.className = 'feedback ok';
+  } catch {
+    msg.textContent = 'Erro de rede ao salvar.';
+    msg.className = 'feedback err';
+  }
+});
+
 setInterval(() => {
   if ($('#autoRefresh').checked && !$('#dashboardView').classList.contains('hidden')) {
     loadStats();
   }
 }, 30000);
 
+updateGeneratedUrl();
 loadStats();
+loadPixelsConfig();
 </script>
 </body>
 </html>
-

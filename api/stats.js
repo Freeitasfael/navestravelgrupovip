@@ -1,22 +1,28 @@
-const crypto = require('crypto');
 const {
   getRedisConfig,
   redisPipeline,
+  checkAdminAuth,
   getSaoPauloParts,
   getRecentDays,
   pairsToObject,
 } = require('./_redis');
 
-function checkAuth(req) {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) return { authorized: true, authEnabled: false };
-  const provided = String(req.headers['x-admin-password'] || '');
-  const expectedBuf = Buffer.from(expected, 'utf8');
-  const providedBuf = Buffer.from(provided, 'utf8');
-  const match =
-    expectedBuf.length === providedBuf.length &&
-    crypto.timingSafeEqual(expectedBuf, providedBuf);
-  return { authorized: match, authEnabled: true };
+function buildFunnelRows(viewsObj, clicksObj) {
+  const keys = new Set([...Object.keys(viewsObj), ...Object.keys(clicksObj)]);
+  const rows = [];
+  for (const key of keys) {
+    const [source, extra] = key.split('|');
+    const views = Number(viewsObj[key]) || 0;
+    const clicks = Number(clicksObj[key]) || 0;
+    rows.push({
+      key,
+      source: source || 'direto',
+      detail: extra || '',
+      views,
+      clicks,
+    });
+  }
+  return rows.sort((a, b) => b.clicks - a.clicks || b.views - a.views);
 }
 
 module.exports = async function handler(req, res) {
@@ -26,7 +32,7 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { authorized, authEnabled } = checkAuth(req);
+  const { authorized, authEnabled } = checkAdminAuth(req);
   if (!authorized) {
     return res.status(401).json({ error: 'Unauthorized', requiresAuth: true });
   }
@@ -53,6 +59,12 @@ module.exports = async function handler(req, res) {
       ['HGETALL', 'nt:sources'],
       ['HGETALL', `nt:views:hours:${today}`],
       ['LRANGE', 'nt:recent', 0, 29],
+      ['HGETALL', 'nt:channels:views'],
+      ['HGETALL', 'nt:channels:clicks'],
+      ['HGETALL', 'nt:campaigns:views'],
+      ['HGETALL', 'nt:campaigns:clicks'],
+      ['HGETALL', 'nt:geo:views'],
+      ['HGETALL', 'nt:geo:clicks'],
     ];
 
     for (const d of days) {
@@ -75,6 +87,12 @@ module.exports = async function handler(req, res) {
     const sources = pairsToObject(results[7]);
     const rawHours = pairsToObject(results[8]);
     const rawRecent = Array.isArray(results[9]) ? results[9] : [];
+    const channelViews = pairsToObject(results[10]);
+    const channelClicks = pairsToObject(results[11]);
+    const campaignViews = pairsToObject(results[12]);
+    const campaignClicks = pairsToObject(results[13]);
+    const geoViews = pairsToObject(results[14]);
+    const geoClicks = pairsToObject(results[15]);
 
     const recent = rawRecent
       .map((item) => {
@@ -87,7 +105,7 @@ module.exports = async function handler(req, res) {
       .filter(Boolean);
 
     const daily = [];
-    let idx = 10;
+    let idx = 16;
     for (const d of days) {
       daily.push({
         day: d,
@@ -110,6 +128,14 @@ module.exports = async function handler(req, res) {
       return { hour: key, views: Number(rawHours[key]) || 0 };
     });
 
+    const channels = buildFunnelRows(channelViews, channelClicks);
+    const campaigns = buildFunnelRows(campaignViews, campaignClicks);
+    const geo = buildFunnelRows(geoViews, geoClicks).map((row) => ({
+      place: row.key,
+      views: row.views,
+      clicks: row.clicks,
+    }));
+
     return res.status(200).json({
       authEnabled,
       generatedAt: timestamp,
@@ -126,6 +152,9 @@ module.exports = async function handler(req, res) {
       otherLinks,
       devices,
       sources,
+      channels,
+      campaigns,
+      geo,
       recent,
     });
   } catch (err) {
@@ -133,4 +162,3 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Failed to load stats' });
   }
 };
-

@@ -131,20 +131,112 @@ function getVisitorId() {
     return '';
   }
 }
-function getSource() {
+function detectReferrerChannel() {
   try {
-    const utm = new URLSearchParams(location.search).get('utm_source');
-    if (utm) return utm;
-    if (document.referrer) return new URL(document.referrer).hostname.replace(/^www\./, '');
+    if (!document.referrer) return null;
+    const host = new URL(document.referrer).hostname.replace(/^www\./, '').toLowerCase();
+    if (!host || host === location.hostname.toLowerCase()) return null;
+    if (host.includes('instagram.com')) return { source: 'instagram', medium: 'social' };
+    if (host.includes('facebook.com') || host === 'fb.com') return { source: 'facebook', medium: 'social' };
+    if (host.includes('google.')) return { source: 'google', medium: 'organic' };
+    if (host.includes('tiktok.com')) return { source: 'tiktok', medium: 'social' };
+    if (host.includes('whatsapp.com') || host === 'wa.me') return { source: 'whatsapp', medium: 'social' };
+    return { source: host, medium: 'referral' };
+  } catch {
+    return null;
+  }
+}
+function resolveAttribution() {
+  const TTL_MS = 30 * 86400000;
+  let fresh = null;
+  try {
+    const p = new URLSearchParams(location.search);
+    const utmSource = p.get('utm_source') || p.get('src');
+    const utmMedium = p.get('utm_medium');
+    const utmCampaign = p.get('utm_campaign') || '';
+    const utmContent = p.get('utm_content') || '';
+    const hasFb = p.has('fbclid');
+    const hasG = p.has('gclid') || p.has('gbraid') || p.has('wbraid');
+    const hasTt = p.has('ttclid');
+
+    if (utmSource || hasFb || hasG || hasTt) {
+      fresh = {
+        source: (utmSource || (hasFb ? 'meta_ads' : hasG ? 'google_ads' : 'tiktok_ads')).toLowerCase(),
+        medium: (utmMedium || ((hasFb || hasG || hasTt) ? 'cpc' : 'link')).toLowerCase(),
+        campaign: utmCampaign,
+        content: utmContent,
+      };
+    } else {
+      const ref = detectReferrerChannel();
+      if (ref) fresh = { ...ref, campaign: '', content: '' };
+    }
+
+    if (fresh) {
+      localStorage.setItem('nt_attr', JSON.stringify({ ...fresh, ts: Date.now() }));
+      return fresh;
+    }
+
+    const saved = JSON.parse(localStorage.getItem('nt_attr') || 'null');
+    if (saved && saved.source && (Date.now() - (saved.ts || 0) < TTL_MS)) {
+      return {
+        source: saved.source,
+        medium: saved.medium || 'none',
+        campaign: saved.campaign || '',
+        content: saved.content || '',
+      };
+    }
   } catch {}
-  return 'direto';
+  return { source: 'direto', medium: 'none', campaign: '', content: '' };
 }
 const visitorId = getVisitorId();
-const trafficSource = getSource();
+const attr = resolveAttribution();
 const deviceType = (matchMedia('(max-width: 740px)').matches || /Mobi|Android|iPhone/i.test(navigator.userAgent)) ? 'mobile' : 'desktop';
+let pixelConfig = { metaPixelId: '', ga4Id: '', gadsSendTo: '' };
+
+function loadExternalPixels() {
+  if (navigator.webdriver) return;
+  fetch('/api/pixels')
+    .then(r => (r.ok ? r.json() : null))
+    .then(cfg => {
+      if (!cfg) return;
+      pixelConfig = cfg;
+      if (cfg.metaPixelId) {
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        window.fbq('init', cfg.metaPixelId);
+        window.fbq('track', 'PageView');
+      }
+      const gtagPrimary = cfg.ga4Id || (cfg.gadsSendTo ? cfg.gadsSendTo.split('/')[0] : '');
+      if (gtagPrimary) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        if (cfg.ga4Id) window.gtag('config', cfg.ga4Id);
+        if (cfg.gadsSendTo) window.gtag('config', cfg.gadsSendTo.split('/')[0]);
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gtagPrimary);
+        document.head.appendChild(s);
+      }
+    })
+    .catch(() => {});
+}
+loadExternalPixels();
+
 function trackEvent(type, loc) {
   if (navigator.webdriver) return;
-  const payload = JSON.stringify({ type, vid: visitorId, loc, source: trafficSource, device: deviceType });
+  const payload = JSON.stringify({
+    type,
+    vid: visitorId,
+    loc,
+    source: attr.source,
+    medium: attr.medium,
+    campaign: attr.campaign,
+    content: attr.content,
+    device: deviceType,
+  });
   try {
     if (navigator.sendBeacon && navigator.sendBeacon('/api/track', new Blob([payload], { type: 'application/json' }))) return;
   } catch {}
@@ -152,8 +244,21 @@ function trackEvent(type, loc) {
 }
 trackEvent('pageview');
 document.querySelectorAll('[data-vip]').forEach(button => button.addEventListener('click', () => {
-  trackEvent('vip_click', button.dataset.vipLoc || 'unknown');
-  if (linkGrupoVip) setTimeout(() => window.location.assign(linkGrupoVip), 80);
+  const loc = button.dataset.vipLoc || 'unknown';
+  trackEvent('vip_click', loc);
+  if (window.fbq && pixelConfig.metaPixelId) {
+    window.fbq('track', 'Lead', { content_name: 'Grupo VIP Black Friday', button_location: loc, source: attr.source });
+  }
+  if (window.gtag) {
+    if (pixelConfig.ga4Id) {
+      window.gtag('event', 'generate_lead', { event_category: 'Grupo VIP', event_label: loc, source: attr.source, campaign: attr.campaign, transport_type: 'beacon' });
+    }
+    if (pixelConfig.gadsSendTo) {
+      window.gtag('event', 'conversion', { send_to: pixelConfig.gadsSendTo, transport_type: 'beacon' });
+    }
+  }
+  const hasPixels = Boolean(pixelConfig.metaPixelId || pixelConfig.ga4Id || pixelConfig.gadsSendTo);
+  if (linkGrupoVip) setTimeout(() => window.location.assign(linkGrupoVip), hasPixels ? 180 : 80);
   else document.querySelector('#preview').showModal();
 }));
 document.querySelectorAll('[data-track-link]').forEach(link => link.addEventListener('click', () => {
