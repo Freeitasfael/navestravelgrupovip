@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin · Fluxo & Cliques | Naves Travel</title>
+<style>
+:root{
+  --navy:#0b2638;
+  --deep:#091722;
+  --gold:#f7c853;
+  --paper:#f8f5ed;
+  --card:#ffffff;
+  --border:#e2ddd0;
+  --muted:#4c6575;
+  --green:#29df85;
+  --green-dark:#075e35;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--navy);font-family:Inter,system-ui,-apple-system,sans-serif;overflow-x:clip}
+.wrap{width:min(1180px,calc(100% - 32px));margin:0 auto}
+header{background:var(--deep);color:#fff;border-bottom:1px solid #ffffff1a}
+header .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:84px;height:auto;background:#f8f5ed;padding:6px 8px;border-radius:8px;display:block}
+.brand-title{display:flex;flex-direction:column;gap:2px}
+.brand-title strong{font-size:16px;letter-spacing:-.02em}
+.brand-title span{font-size:12px;color:#b8c7d1}
+.actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid #ffffff30;background:#132b3c;color:#fff;border-radius:8px;padding:9px 14px;font:600 13px/1 Inter,system-ui,sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:38px;transition:background .15s,transform .15s}
+.btn:hover{background:#1c3d54}
+.btn.primary{background:var(--green);color:#062619;border-color:transparent;font-weight:750}
+.btn.primary:hover{background:#52eba0}
+.btn.ghost{background:transparent;color:var(--navy);border-color:var(--border)}
+.btn.ghost:hover{background:#efeae0}
+main{padding:24px 0 48px}
+.status-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px;font-size:13px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:#e8f8ef;color:var(--green-dark);font-weight:600;font-size:12px}
+.pill.warn{background:#fff3d6;color:#7a5100}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:0 1px 2px #0917220a}
+.kpi-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-bottom:8px}
+.kpi-value{font-size:clamp(26px,3vw,34px);font-weight:800;letter-spacing:-.04em;color:var(--navy);line-height:1.05}
+.kpi-sub{margin-top:8px;font-size:13px;color:var(--muted)}
+.kpi-sub b{color:var(--navy)}
+.grid-2{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:16px;font-weight:750;letter-spacing:-.02em}
+.card .sub{margin:0 0 16px;font-size:12.5px;color:var(--muted)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-bottom:10px;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.swatch{width:10px;height:10px;border-radius:3px;display:inline-block}
+.bars{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:6px;align-items:end;height:168px;padding-top:14px;border-bottom:1px solid var(--border)}
+.day-col{display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:end;min-width:0}
+.bar-pair{display:flex;align-items:end;justify-content:center;gap:2px;width:100%;height:132px}
+.bar{width:44%;min-height:2px;border-radius:4px 4px 0 0;transition:height .3s ease}
+.bar.views{background:var(--navy)}
+.bar.clicks{background:var(--green)}
+.day-lbl{font-size:10px;color:var(--muted);white-space:nowrap}
+.hours{display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:3px;align-items:end;height:140px;padding-top:12px;border-bottom:1px solid var(--border)}
+.hour-col{display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:5px}
+.hour-bar{width:100%;min-height:2px;border-radius:3px 3px 0 0;background:#2f5a75}
+.hour-lbl{font-size:9px;color:var(--muted)}
+.list{display:flex;flex-direction:column;gap:10px}
+.row-item{display:flex;flex-direction:column;gap:5px}
+.row-head{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;gap:8px}
+.row-head strong{font-weight:650;word-break:break-word}
+.row-head span{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.track-bar{height:8px;border-radius:999px;background:#efeae0;overflow:hidden}
+.track-fill{height:100%;border-radius:999px;background:var(--navy)}
+.track-fill.green{background:var(--green)}
+.track-fill.gold{background:#d9a82d}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid #efeae0;white-space:nowrap}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;font-size:11.5px;font-weight:650}
+.badge.view{background:#eef3f7;color:var(--navy)}
+.badge.vip{background:#e1faed;color:var(--green-dark)}
+.badge.link{background:#fdf3d7;color:#744d00}
+.empty{font-size:13px;color:var(--muted);padding:14px 0}
+.login-box,.error-box{max-width:420px;margin:48px auto;background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 8px 30px #09172210}
+.login-box h1,.error-box h1{margin:0 0 8px;font-size:22px;letter-spacing:-.03em}
+.login-box p,.error-box p{margin:0 0 16px;font-size:14px;color:var(--muted);line-height:1.5}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:13px;font-weight:600}
+.field input{border:1px solid #c9c3b5;border-radius:9px;padding:11px 12px;font:inherit;font-size:15px}
+.field input:focus{outline:2px solid var(--navy);border-color:var(--navy)}
+.err-msg{color:#b42318;font-size:13px;margin:0 0 12px}
+.hidden{display:none!important}
+@media(max-width:960px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .wrap{width:calc(100% - 24px)}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .card{padding:14px}
+  .kpi-value{font-size:24px}
+  .bars{gap:4px;height:145px}
+  .day-lbl{font-size:9px}
+  .hours{gap:2px}
+  .hour-lbl:nth-child(even){display:none}
+  .hour-col:nth-child(even) .hour-lbl{visibility:hidden}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <img src="./assets/1eb74837e645.png" alt="Naves Travel">
+      <div class="brand-title">
+        <strong>Painel Admin · Black Friday</strong>
+        <span>Fluxo de acessos e cliques no Grupo VIP</span>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="/">Ver site ↗</a>
+      <button class="btn primary" id="refreshBtn" type="button">Atualizar</button>
+      <button class="btn hidden" id="logoutBtn" type="button">Sair</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="loginView" class="login-box hidden">
+    <h1>Acesso restrito</h1>
+    <p>Digite a senha de administrador para visualizar as métricas do site.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="passwordInput">Senha</label>
+        <input id="passwordInput" type="password" autocomplete="current-password" required placeholder="••••••••">
+      </div>
+      <p id="loginError" class="err-msg hidden"></p>
+      <button class="btn primary" style="width:100%;justify-content:center;min-height:44px" type="submit">Entrar no painel</button>
+    </form>
+  </section>
+
+  <section id="errorView" class="error-box hidden">
+    <h1>Configuração pendente</h1>
+    <p id="errorText"></p>
+    <button class="btn ghost" id="retryBtn" type="button">Tentar novamente</button>
+  </section>
+
+  <section id="dashboardView" class="hidden">
+    <div class="status-bar">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="pill" id="authBadge"><span class="dot"></span> Em tempo real</span>
+        <span id="updatedAt">Carregando...</span>
+      </div>
+      <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+        <input type="checkbox" id="autoRefresh" checked>
+        Atualizar a cada 30s
+      </label>
+    </div>
+
+    <div class="kpis">
+      <article class="card">
+        <div class="kpi-label">Acessos totais</div>
+        <div class="kpi-value" id="kpiViews">0</div>
+        <div class="kpi-sub">Hoje: <b id="kpiViewsToday">0</b></div>
+      </article>
+      <article class="card">
+        <div class="kpi-label">Pessoas únicas</div>
+        <div class="kpi-value" id="kpiUniques">0</div>
+        <div class="kpi-sub">Hoje: <b id="kpiUniquesToday">0</b></div>
+      </article>
+      <article class="card">
+        <div class="kpi-label">Cliques no link VIP</div>
+        <div class="kpi-value" id="kpiClicks">0</div>
+        <div class="kpi-sub">Hoje: <b id="kpiClicksToday">0</b> · Únicos: <b id="kpiClickUniques">0</b></div>
+      </article>
+      <article class="card">
+        <div class="kpi-label">Taxa de conversão</div>
+        <div class="kpi-value" id="kpiRate">0%</div>
+        <div class="kpi-sub">Cliques / Acessos: <b id="kpiViewRate">0%</b></div>
+      </article>
+    </div>
+
+    <div class="grid-2">
+      <article class="card">
+        <h2>Fluxo dos últimos 14 dias</h2>
+        <p class="sub">Comparativo diário entre acessos na página e cliques no Grupo VIP</p>
+        <div class="legend">
+          <span><i class="swatch" style="background:var(--navy)"></i> Acessos</span>
+          <span><i class="swatch" style="background:var(--green)"></i> Cliques VIP</span>
+        </div>
+        <div class="bars" id="dailyChart"></div>
+      </article>
+
+      <article class="card">
+        <h2>Fluxo por hora (hoje)</h2>
+        <p class="sub">Distribuição dos acessos ao longo do dia (horário de Brasília)</p>
+        <div class="hours" id="hourlyChart"></div>
+      </article>
+    </div>
+
+    <div class="grid-3">
+      <article class="card">
+        <h2>Botões que mais convertem</h2>
+        <p class="sub">Cliques por posição do botão VIP e links</p>
+        <div class="list" id="locationsList"></div>
+      </article>
+
+      <article class="card">
+        <h2>Dispositivos</h2>
+        <p class="sub">Proporção entre acessos mobile e desktop</p>
+        <div class="list" id="devicesList"></div>
+      </article>
+
+      <article class="card">
+        <h2>Origens de tráfego</h2>
+        <p class="sub">UTM source ou site de origem</p>
+        <div class="list" id="sourcesList"></div>
+      </article>
+    </div>
+
+    <article class="card">
+      <h2>Atividade recente</h2>
+      <p class="sub">Últimos 30 acessos e cliques registrados</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Horário (BRT)</th>
+              <th>Evento</th>
+              <th>Detalhe / Botão</th>
+              <th>Origem</th>
+              <th>Dispositivo</th>
+            </tr>
+          </thead>
+          <tbody id="recentBody"></tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+</main>
+
+<script>
+const STORAGE_KEY = 'nt_admin_password';
+const LOC_LABELS = {
+  header: 'Topo (Grupo VIP ↗)',
+  hero: 'Hero (Botão principal)',
+  closing: 'Final (Entrar agora)',
+  google: 'Rodapé · Google',
+  instagram: 'Rodapé · Instagram',
+  unknown: 'Outro',
+};
+const DEVICE_LABELS = { mobile: 'Celular (Mobile)', desktop: 'Computador (Desktop)' };
+
+const $ = (s) => document.querySelector(s);
+const fmt = (n) => new Intl.NumberFormat('pt-BR').format(Number(n) || 0);
+const pct = (num, den) => (den > 0 ? ((num / den) * 100).toFixed(1).replace('.', ',') + '%' : '0%');
+
+function esc(str) {
+  return String(str ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function showView(name) {
+  $('#loginView').classList.toggle('hidden', name !== 'login');
+  $('#errorView').classList.toggle('hidden', name !== 'error');
+  $('#dashboardView').classList.toggle('hidden', name !== 'dashboard');
+}
+
+function renderBarsList(container, entries, labelMap = {}, colorClass = '') {
+  if (!entries.length) {
+    container.innerHTML = '<div class="empty">Nenhum dado registrado ainda.</div>';
+    return;
+  }
+  const total = entries.reduce((acc, [, v]) => acc + v, 0) || 1;
+  container.innerHTML = entries.map(([key, val]) => {
+    const share = Math.round((val / total) * 100);
+    const label = labelMap[key] || key;
+    return `
+      <div class="row-item">
+        <div class="row-head">
+          <strong>${esc(label)}</strong>
+          <span>${fmt(val)} (${share}%)</span>
+        </div>
+        <div class="track-bar"><div class="track-fill ${colorClass}" style="width:${Math.max(share, 3)}%"></div></div>
+      </div>`;
+  }).join('');
+}
+
+function renderDashboard(data) {
+  const { totals, today, daily, hours, locations, otherLinks, devices, sources, recent, authEnabled, generatedAt } = data;
+  $('#kpiViews').textContent = fmt(totals.views);
+  $('#kpiViewsToday').textContent = fmt(today.views);
+  $('#kpiUniques').textContent = fmt(totals.uniques);
+  $('#kpiUniquesToday').textContent = fmt(today.uniques);
+  $('#kpiClicks').textContent = fmt(totals.vipClicks);
+  $('#kpiClicksToday').textContent = fmt(today.vipClicks);
+  $('#kpiClickUniques').textContent = fmt(totals.uniqueVipClickers);
+  $('#kpiRate').textContent = pct(totals.uniqueVipClickers || totals.vipClicks, totals.uniques);
+  $('#kpiViewRate').textContent = pct(totals.vipClicks, totals.views);
+  $('#updatedAt').textContent = `Atualizado em ${generatedAt} (BRT)`;
+
+  const badge = $('#authBadge');
+  if (authEnabled) {
+    badge.className = 'pill';
+    badge.innerHTML = '<span class="dot"></span> Protegido por senha';
+    $('#logoutBtn').classList.remove('hidden');
+  } else {
+    badge.className = 'pill warn';
+    badge.innerHTML = '<span class="dot"></span> Acesso aberto (sem senha)';
+    $('#logoutBtn').classList.add('hidden');
+  }
+
+  const maxDay = Math.max(1, ...daily.map((d) => Math.max(d.views, d.vipClicks)));
+  $('#dailyChart').innerHTML = daily.map((d) => {
+    const vh = Math.round((d.views / maxDay) * 100);
+    const ch = Math.round((d.vipClicks / maxDay) * 100);
+    const shortDay = d.day.slice(8, 10) + '/' + d.day.slice(5, 7);
+    const tip = `${shortDay}: ${fmt(d.views)} acessos (${fmt(d.uniques)} únicos) · ${fmt(d.vipClicks)} cliques VIP`;
+    return `
+      <div class="day-col" title="${esc(tip)}">
+        <div class="bar-pair">
+          <div class="bar views" style="height:${d.views ? Math.max(vh, 4) : 2}%"></div>
+          <div class="bar clicks" style="height:${d.vipClicks ? Math.max(ch, 4) : 2}%"></div>
+        </div>
+        <span class="day-lbl">${esc(shortDay)}</span>
+      </div>`;
+  }).join('');
+
+  const maxHour = Math.max(1, ...hours.map((h) => h.views));
+  $('#hourlyChart').innerHTML = hours.map((h) => {
+    const pctH = Math.round((h.views / maxHour) * 100);
+    return `
+      <div class="hour-col" title="${h.hour}h: ${fmt(h.views)} acessos">
+        <div class="hour-bar" style="height:${h.views ? Math.max(pctH, 5) : 2}%"></div>
+        <span class="hour-lbl">${h.hour}</span>
+      </div>`;
+  }).join('');
+
+  const locEntries = [
+    ...Object.entries(locations),
+    ...Object.entries(otherLinks),
+  ].sort((a, b) => b[1] - a[1]);
+  renderBarsList($('#locationsList'), locEntries, LOC_LABELS, 'green');
+
+  const devEntries = Object.entries(devices).sort((a, b) => b[1] - a[1]);
+  renderBarsList($('#devicesList'), devEntries, DEVICE_LABELS, '');
+
+  const srcEntries = Object.entries(sources).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  renderBarsList($('#sourcesList'), srcEntries, {}, 'gold');
+
+  const tbody = $('#recentBody');
+  if (!recent.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">Nenhum evento registrado ainda.</td></tr>';
+  } else {
+    tbody.innerHTML = recent.map((ev) => {
+      const badgeClass = ev.type === 'vip_click' ? 'vip' : ev.type === 'link_click' ? 'link' : 'view';
+      const evLabel = ev.type === 'vip_click' ? 'Clique VIP' : ev.type === 'link_click' ? 'Clique link' : 'Acesso';
+      const detail = ev.loc ? (LOC_LABELS[ev.loc] || ev.loc) : 'Página inicial';
+      return `
+        <tr>
+          <td>${esc(ev.ts)}</td>
+          <td><span class="badge ${badgeClass}">${evLabel}</span></td>
+          <td>${esc(detail)}</td>
+          <td>${esc(ev.source || 'direto')}</td>
+          <td>${esc(ev.device === 'mobile' ? 'Mobile' : 'Desktop')}</td>
+        </tr>`;
+    }).join('');
+  }
+}
+
+async function loadStats() {
+  const password = sessionStorage.getItem(STORAGE_KEY) || '';
+  try {
+    const res = await fetch('/api/stats', {
+      headers: password ? { 'x-admin-password': password } : {},
+      cache: 'no-store',
+    });
+    if (res.status === 401) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      showView('login');
+      if (password) {
+        $('#loginError').textContent = 'Senha incorreta. Tente novamente.';
+        $('#loginError').classList.remove('hidden');
+      }
+      return;
+    }
+    const data = await res.json();
+    if (!res.ok) {
+      $('#errorText').textContent = data.error || 'Não foi possível carregar as estatísticas.';
+      showView('error');
+      return;
+    }
+    $('#loginError').classList.add('hidden');
+    showView('dashboard');
+    renderDashboard(data);
+  } catch (err) {
+    $('#errorText').textContent = 'Erro de rede ao consultar /api/stats.';
+    showView('error');
+  }
+}
+
+$('#loginForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const pwd = $('#passwordInput').value;
+  sessionStorage.setItem(STORAGE_KEY, pwd);
+  loadStats();
+});
+
+$('#logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem(STORAGE_KEY);
+  $('#passwordInput').value = '';
+  showView('login');
+});
+
+$('#refreshBtn').addEventListener('click', loadStats);
+$('#retryBtn').addEventListener('click', loadStats);
+
+setInterval(() => {
+  if ($('#autoRefresh').checked && !$('#dashboardView').classList.contains('hidden')) {
+    loadStats();
+  }
+}, 30000);
+
+loadStats();
+</script>
+</body>
+</html>
+
