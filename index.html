@@ -96,7 +96,47 @@ html,body{overflow-x:clip}
   .wrap{width:calc(100% - 24px)}
   h1{font-size:30px}
   .cta{padding:14px;font-size:15px}
-}</style>
+}
+.intro-splash{
+  position:fixed;inset:0;z-index:9999;pointer-events:none;
+  display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 42%,#133146 0%,#091722 72%);
+  animation:splashOut .55s cubic-bezier(.22,1,.36,1) .72s forwards;
+}
+.intro-inner{
+  display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:24px;
+  animation:splashLogo .5s cubic-bezier(.22,1,.36,1) both;
+}
+.intro-inner img{width:min(165px,44vw);height:auto;display:block}
+.intro-kicker{
+  color:var(--gold);font-size:11.5px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+}
+.intro-bar{
+  width:150px;height:3px;border-radius:999px;background:#ffffff22;overflow:hidden;
+}
+.intro-bar span{
+  display:block;height:100%;width:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--gold),var(--green));
+  transform-origin:left;animation:splashBar .65s cubic-bezier(.22,1,.36,1) .08s both;
+}
+header{animation:fadeDown .55s cubic-bezier(.22,1,.36,1) .72s both}
+.hero .tag{animation:heroRise .6s cubic-bezier(.22,1,.36,1) .76s both}
+.hero h1{animation:heroRise .65s cubic-bezier(.22,1,.36,1) .84s both}
+.hero .intro{animation:heroRise .65s cubic-bezier(.22,1,.36,1) .92s both}
+.hero .cta{animation:heroRise .65s cubic-bezier(.22,1,.36,1) 1s both,ctaGlow 2.4s ease-in-out 1.8s 2}
+.hero .photo{animation:heroPhoto .85s cubic-bezier(.22,1,.36,1) .78s both}
+@keyframes splashLogo{from{opacity:0;transform:translateY(12px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes splashBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes splashOut{to{opacity:0;transform:translateY(-24px);visibility:hidden}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes heroRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes heroPhoto{from{opacity:0;transform:scale(.96) translateY(16px)}to{opacity:1;transform:none}}
+@keyframes ctaGlow{0%,100%{box-shadow:0 0 0 0 #29df8500}50%{box-shadow:0 0 0 10px #29df8538}}
+@media(prefers-reduced-motion:reduce){
+  .intro-splash{display:none!important}
+  header,.hero .tag,.hero h1,.hero .intro,.hero .cta,.hero .photo{animation:none!important;opacity:1!important;transform:none!important}
+}
+</style>
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -116,6 +156,7 @@ src="https://www.facebook.com/tr?id=976602888856705&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 </head>
 <body>
+<div class="intro-splash" id="introSplash" aria-hidden="true"><div class="intro-inner"><img src="./assets/ec85710345ee.png" alt=""><span class="intro-kicker">Black Friday · Grupo VIP</span><div class="intro-bar"><span></span></div></div></div>
 <header><div class="wrap"><img class="logo" src="./assets/1eb74837e645.png" alt="Naves Travel"><button class="cta top" data-vip data-vip-loc="header">Grupo VIP ↗</button></div></header>
 <main><section class="hero"><div class="wrap hero-grid"><div><div class="tag">Grupo VIP</div><h1>Black Friday da Naves Travel no <em>Grupo VIP de Ofertas</em></h1><p class="intro">No Grupo VIP da Naves Travel, você encontra promoções que não vão para o Instagram e acompanha as ofertas da Black Friday em tempo integral pelo WhatsApp.</p><button class="cta" data-vip data-vip-loc="hero"><svg class="wa" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 11.8a8.5 8.5 0 0 1-12.6 7.5l-4.4 1.2 1.2-4.3a8.5 8.5 0 1 1 15.8-4.4Z" stroke="currentColor" stroke-width="1.7"/><path d="M9 7.5c-1.9.2-2 3.3.5 5.7 2.2 2.2 5.2 3.3 6 1.4l.3-1-2.5-1.2-.9 1c-1.2-.4-2.5-1.6-2.9-2.8l.7-.8L9 7.5Z" fill="currentColor"/></svg> Quero entrar no Grupo VIP</button></div><figure class="photo"><a href="https://commons.wikimedia.org/wiki/File:Porto_de_Galinhas_piscinas_naturais.jpg" aria-label="Piscinas naturais de Porto de Galinhas. Foto de Jobosco, licença CC BY-SA 4.0, recorte na exibição." title="Foto de Jobosco · CC BY-SA 4.0 · recorte na exibição"><img src="./assets/646570918954.jpeg" alt="Piscinas naturais de Porto de Galinhas, Pernambuco"></a></figure></div></section><div class="transition-band"><div class="ribbon" aria-hidden="true"><div class="track"><span> BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp;</span><span> BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp; BLACK FRIDAY &nbsp;✦&nbsp;</span></div></div></div>
 <section class="benefits"><div class="wrap">
@@ -291,4 +332,8 @@ if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: re
     observer.observe(node);
   });
 }
+setTimeout(() => {
+  const splash = document.getElementById('introSplash');
+  if (splash) splash.remove();
+}, 1400);
 </script></body></html>
